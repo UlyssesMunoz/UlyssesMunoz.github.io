@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Option One</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      position: relative; /* Allow absolute positioning of buttons */
+    }
+    h1 {
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: white;
+      text-align: center;
+      transform: translateY(-33vh);
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      transition: transform 0.3s;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.3s;
+    }
+    .yes {
+      background-color: #32cd32;
+      color: white;
+    }
+    .no {
+      background-color: #ff4500;
+      color: white;
+    }
+    .back-button {
+      position: absolute;
+      top: 10px; /* Adjust as needed */
+      right: 10px; /* Adjust as needed */
+      width: 100px; /* Set size for the button */
+      height: 40px; /* Set size for the button */
+      background: transparent; /* Invisible background */
+      border: none; /* No border */
+      cursor: pointer; /* Cursor change on hover */
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: black;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      text-align: center;
+    }
+    .modal button {
+      margin: 5px;
+    }
+    /* Heart styles */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      clip-path: path("M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z");
+      opacity: 0.9;
+      animation: pop 4s forwards;
+    }
+    @keyframes pop {
+      from {
+        transform: scale(0);
+        opacity: 0.8;
+      }
+      to {
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="top-box">
+  <button class="back-button" onclick="window.location.href='page2.html'"></button> <!-- Invisible button -->
+</div>
+<h1>¿Can I Be Your Boyfriend?</h1>
+<div class="button-container" id="buttonContainer">
+  <button class="yes" id="yesButton">Yes!</button>
+  <button class="no" id="noButton">No.</button>
+</div>
+
+<!-- Modal for confirmation -->
+<div class="modal" id="confirmationModal">
+  <div class="modal-content">
+    <p>Are you sure?</p>
+    <button id="confirmYes">Yes</button>
+    <button id="confirmNo">No</button>
+  </div>
+</div>
+
+<!-- Modal for success message -->
+<div class="modal" id="successModal">
+  <div class="modal-content">
+    <p>Yay! You said yes!</p>
+    <button id="goToPageButton">🪷Click Here🪷</button>
+  </div>
+</div>
+
+<script>
+  const yesButton = document.getElementById('yesButton');
+  const noButton = document.getElementById('noButton');
+  const confirmationModal = document.getElementById('confirmationModal');
+  const successModal = document.getElementById('successModal');
+  const confirmYes = document.getElementById('confirmYes');
+  const confirmNo = document.getElementById('confirmNo');
+  const goToPageButton = document.getElementById('goToPageButton');
+
+  let noClickCount = 0;
+  const scaleFactor = 1.2;
+  const noScaleFactor = 0.8;
+
+  noButton.addEventListener('click', () => {
+    noClickCount++;
+
+    const newYesScale = scaleFactor ** noClickCount;
+    yesButton.style.transform = `scale(${newYesScale})`;
+
+    const newNoScale = noScaleFactor ** noClickCount;
+    noButton.style.transform = `scale(${newNoScale})`;
+
+    // Generate random position for the "No" button
+    const randomX = Math.random() * (window.innerWidth - noButton.offsetWidth);
+    const randomY = Math.random() * (window.innerHeight - noButton.offsetHeight);
+    noButton.style.position = 'absolute'; // Make sure the button is positioned absolutely
+    noButton.style.left = `${randomX}px`;
+    noButton.style.top = `${randomY}px`;
+
+    // Show feedback after specific clicks
+    if (noClickCount === 1) {
+      alert("ouchhhhh");
+    }
+    if (noClickCount === 2) {
+      alert("wow you still clicked no huh");
+    }
+    if (noClickCount === 9) {
+      alert("well this is it goodbye I guess :(");
+    }
+    if (noClickCount >= 10) {
+      window.close();
+    }
+  });
+
+  yesButton.addEventListener('click', () => {
+    createHearts();
+
+    // Pause for 2 seconds before showing the confirmation modal
+    setTimeout(() => {
+      confirmationModal.style.display = "block";
+    }, 2000); // 2000 milliseconds = 2 seconds
+  });
+
+  confirmYes.addEventListener('click', () => {
+    confirmationModal.style.display = "none";
+    successModal.style.display = "block";
+  });
+
+  confirmNo.addEventListener('click', () => {
+    window.close();
+    confirmationModal.style.display = "none";
+  });
+
+  goToPageButton.addEventListener('click', () => {
+    window.location.href = 'DatingPage.html'; // Replace with your desired URL
+  });
+
+  function createHearts() {
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+      heart.style.top = Math.random() * (window.innerHeight - 20) + 'px';
+      document.body.appendChild(heart);
+      heart.addEventListener('animationend', () => {
+        heart.remove();
+      });
+    }
+  }
+</script>
+</body>
+</html>

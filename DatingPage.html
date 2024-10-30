@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to the Dating Page!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: black;
+      /*background-color: #282c34;*/
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      position: relative; /* For positioning the button */
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 40px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #32cd32;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #28a745;
+    }
+    /* Go Back Button Styles */
+    #goBackButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      opacity: 0; /* Make it semi-transparent */
+      pointer-events: auto; /* Allow interaction */
+      transition: opacity 0.3s; /* Transition for hover effect */
+      background: transparent;
+    }
+    /*#goBackButton:hover {*/
+    /*  opacity: 1; !* Fully visible on hover *!*/
+    /*}*/
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      clip-path: path("M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z");
+      opacity: 0.9;
+      animation: pop 4s forwards;
+    }
+    @keyframes pop {
+      from {
+        transform: scale(0);
+        opacity: 0.8;
+      }
+      to {
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<h1>Well lets make it offical!</h1>
+<p id="dateMessage"></p>
+
+<button id="goBackButton" onclick="goBack()">Go Back</button>
+
+<script>
+  function goBack() {
+    window.history.back(); // Navigates back to the previous page
+  }
+  // Function to create hearts
+  function createHearts() {
+    for (let i = 0; i < 15; i++) { // Create 5 hearts each time
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+      heart.style.top = Math.random() * (window.innerHeight - 20) + 'px';
+      document.body.appendChild(heart);
+      heart.addEventListener('animationend', () => {
+        heart.remove();
+      });
+    }
+  }
+
+  // Create hearts continuously every 1 second
+  setInterval(createHearts, 1000); // 1000 milliseconds = 1 second
+
+  // Set the current date and time in the <p> element
+  function setDateMessage() {
+    const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    const formattedDate = now.toLocaleString('en-US', options);
+    document.getElementById('dateMessage').innerText = `I guess that means this is the start of our adventure!\n\nAs of ${formattedDate}, we are now officially dating.`;
+  }
+
+  // Call the function to set the date message when the page loads
+  window.onload = () => {
+    setDateMessage();
+    createHearts(); // Create hearts immediately when the page loads
+  };
+</script>
+</body>
+</html>
